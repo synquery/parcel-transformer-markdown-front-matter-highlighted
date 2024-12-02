@@ -1,0 +1,8 @@
+:root {
+  --prism-color: #393A34;
+  --prism-background-color: #f6f8fa;
+}
+pre {
+  background: var(--prism-background-color);
+  color: var(--prism-color);
+}

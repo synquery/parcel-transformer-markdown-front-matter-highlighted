@@ -1,38 +1,79 @@
-# parcel-transformer-markdown-front-matter
+# parcel-transformer-markdown-front-matter-highlighted
 
 
-[![NPM Downloads](https://img.shields.io/npm/dm/parcel-transformer-markdown-front-matter.svg?style=flat)](https://www.npmjs.com/package/parcel-transformer-markdown-front-matter)
-[![Build & Deploy](https://github.com/indoorequal/parcel-transformer-markdown-front-matter/actions/workflows/ci.yml/badge.svg)](https://github.com/indoorequal/parcel-transformer-markdown-front-matter/actions/workflows/ci.yml)
-[![npm version](https://img.shields.io/npm/v/parcel-transformer-markdown-front-matter.svg)](https://www.npmjs.com/package/parcel-transformer-markdown-front-matter)
+[![NPM Downloads](https://img.shields.io/npm/dm/@synquery/parcel-transformer-markdown-front-matter-highlighted.svg?style=flat)](https://www.npmjs.com/package/@synquery/parcel-transformer-markdown-front-matter-highlighted)
+[![Build & Deploy](https://github.com/synquery/parcel-transformer-markdown-front-matter-highlighted/actions/workflows/ci.yml/badge.svg)](https://github.com/synquery/parcel-transformer-markdown-front-matter-highlighted/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/@synquery/parcel-transformer-markdown-front-matter-highlighted.svg)](https://www.npmjs.com/package/@synquery/parcel-transformer-markdown-front-matter-highlighted)
 
-A [**`Parcel 2`**](https://parceljs.org/) plugin to load markdown file with YAML Front matter. It uses [Marked][] to render markdown.
+A [**`Parcel 2`**](https://parceljs.org/) plugin to load markdown file with YAML Front matter and code whitch is want to highlighted. It uses [Marked][https://www.npmjs.com/package/marked] and [Prism.js](https://prismjs.com/) to render markdown.
+
+
+## Demonstration
+
+```bash
+npm i yarn # If you don't have
+git cline git@github.com:synquery/parcel-transformer-markdown-front-matter-highlighted.git
+cd parcel-transformer-markdown-front-matter-highlighted
+yarn install
+yarn build
+yarn serve-example # => http://localhost:1234 provides the transform result of example/web3js_quickstart.md .
+```
 
 ## Usage
 
 Install the plugin
 
 ```bash
-npm install parcel-transformer-markdown-front-matter --save-dev
+npm i @synquery/parcel-transformer-markdown-front-matter-highlighted --save-dev
 ```
-Add `parcel-transformer-markdown-front-matter` transformer to the `.parcelrc`
+or
+```
+yarn add @synquery/parcel-transformer-markdown-front-matter-highlighted --dev
+```
+
+Add `@synquery/parcel-transformer-markdown-front-matter-highlighted` transformer to the `.parcelrc`
 
 ```js
 {
   "extends": "@parcel/config-default",
   "transformers": {
-    "*.md": [ "parcel-transformer-markdown-front-matter" ]
+    "*.md": [ "@synquery/parcel-transformer-markdown-front-matter-highlighted" ]
   }
 }
 ```
 
-`Markdown.md`:
+!! CAUTION !! Parcel2 should specify multiple extentions if you set key with bracket: "{ }".
+
+❌ Not working
+```js
+  "transformers": {
+    "*.{md}": [ "@synquery/parcel-transformer-markdown-front-matter-highlighted" ]
+  }
+```
+
+⭕️ working
+```js
+  "transformers": {
+    "*.{md,markdown}": [ "@synquery/parcel-transformer-markdown-front-matter-highlighted" ]
+  }
+```
+
+`mydoc.md`:
 
 ```markdown
 ---
-title: My title
+title: Web3.js
+sidebar_position: 1
+sidebar_label: 'Mastering Providers'
 ---
+\`\`\`typescript title='IPC, HTTP and WS provider'
+import { Web3 } from 'web3';
+import { IpcProvider } from 'web3-providers-ipc';
 
-# Markdown content
+// highlight-next-line
+// IPC provider
+const web3 = new Web3(new IpcProvider('/Library/Ethereum/geth.ipc'));
+\`\`\`
 ```
 
 **Output HTML string**
@@ -40,10 +81,7 @@ title: My title
 Import your markdown file, and get the HTML content and the yaml front matter properties.
 
 ```js
-import file from './Markdown.md';
-
-console.log(file.__content) // => Output HTML string.
-console.log(file.title) // output title property
+import file from './mydoc.md';
 document.body.innerHTML = file.__content;
 ```
 
@@ -57,10 +95,8 @@ document.body.innerHTML = file.__content;
 ```
 
 ```js
-import file from './Markdown.md';
-
-console.log(file.__content) // => Output Markdown string.
-document.body.innerHTML = file.__content;
+import file from './mydoc.md';
+document.body.innerHTML = file.__content; // => Output Markdown string.
 ```
 
 ## Configuration
@@ -98,8 +134,11 @@ module.exports = {
 
 MIT
 
-© 2024 François de Metz
+© 2024 [Synquery Team](https://synquery.org)
 
+forked from:
+© 2024 François de Metz
 © 2022 [Kenny Wong](https://wangchujiang.com)
 
 [marked]: https://marked.js.org/
+[prism.js]: https://prismjs.com/
